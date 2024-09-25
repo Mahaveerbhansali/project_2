@@ -85,6 +85,7 @@ def search_similar(query, k=5):
     return [text_chunks[i] for i in indices[0]]
 
 # Define a function to generate a response
+# Define a function to generate a response with longer answers
 def generate_response(question):
     # Get the top relevant context
     context = "\n".join(search_similar(question))
@@ -94,7 +95,11 @@ def generate_response(question):
         context = context[:1024]  # Truncate if necessary
 
     # Use the question-answering model to find the answer
-    answer = qa_pipeline(question=question, context=context)
+    answer = qa_pipeline(
+        question=question,
+        context=context,
+        max_answer_len=150  # Increase the max length to allow longer answers
+    )
 
     return answer['answer']
 
